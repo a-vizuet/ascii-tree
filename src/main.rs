@@ -17,7 +17,7 @@ struct Element {
 
 fn main() {
     match read_folder(".") {
-        Ok(a) => println!("{:?}", a),
+        Ok(a) => println!("{0}", to_ascii(a)),
         Err(e) => println!("{:?}", e),
     }
 }
@@ -42,4 +42,28 @@ fn read_folder(path: &str) -> Result<Vec<Element>, Error> {
     }
 
     Ok(elements)
+}
+
+/**
+ * It should return something like
+ * Main folder
+ * |--> Secondary folder
+ * |    |-> File
+ */
+fn to_ascii(elements: Vec<Element>) -> String {
+    let mut ascii_tree = String::new() + "Main folder\n";
+
+    for element in elements {
+        ascii_tree += "|";
+        match element.type_el {
+            TypeElement::FILE => {
+                ascii_tree += &format!("--> {:?} \n", element.name.to_str().unwrap()).to_string();
+            }
+            TypeElement::DIRECTORY => {
+                ascii_tree += &format!("--> {:?} \n", element.name.to_str().unwrap()).to_string()
+            }
+        }
+    }
+
+    ascii_tree.to_string()
 }
