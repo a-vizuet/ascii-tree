@@ -50,19 +50,13 @@ fn init_ascii_build(elements: Vec<Element>) -> String {
     to_ascii(Some(ascii_tree), elements, 0)
 }
 
-/**
- * It should return something like
- * Main folder
- * |--> Secondary folder
- * |    |-> File
- */
 fn to_ascii(ascii_tree: Option<String>, elements: Vec<Element>, level: i32) -> String {
     let mut unwrapped_ascii_tree: String = ascii_tree.unwrap_or("".to_string());
     for element in elements {
         unwrapped_ascii_tree.push_str(&"|   ".repeat(level as usize));
 
         unwrapped_ascii_tree
-            .push_str(&format!("--> {:?} \n", element.name.to_str().unwrap()).to_string());
+            .push_str(&format!("|--> {:?} \n", element.name.to_str().unwrap()).to_string());
 
         if format!("{:?}", element.type_el) == format!("{:?}", TypeElement::DIRECTORY) {
             unwrapped_ascii_tree.push_str(&to_ascii(None, element.children.unwrap(), level + 1));
